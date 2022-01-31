@@ -19,6 +19,10 @@
 #ifndef _ELF_H
 #define	_ELF_H 1
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* Standard ELF types.  */
 
 #include <stdint.h>
@@ -4101,5 +4105,9 @@ enum
 #define R_ARC_TLS_DTPOFF_S9	0x4a
 #define R_ARC_TLS_LE_S9		0x4a
 #define R_ARC_TLS_LE_32		0x4b
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif	/* elf.h */
