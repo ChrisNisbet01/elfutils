@@ -8,7 +8,7 @@ Description: elfutils libelf library to read and write ELF files
 Version: @VERSION@
 URL: http://elfutils.org/
 
-Libs: -L${libdir} -lelf
+Libs: -L${libdir} -lelf @intl_LDFLAGS@
 Cflags: -I${includedir}
 
 Requires.private: zlib

@@ -44,6 +44,9 @@
 
 typedef struct Dwfl_Process Dwfl_Process;
 
+#ifdef _ /* fix libintl-stub */
+#undef _
+#endif
 /* gettext helper macros.  */
 #define _(Str) dgettext ("elfutils", Str)
 

@@ -36,6 +36,9 @@
 
 #include "libdwelf.h"
 
+#ifdef _ /* fix libintl-stub */
+#undef _
+#endif
 /* gettext helper macros.  */
 #define _(Str) dgettext ("elfutils", Str)
 

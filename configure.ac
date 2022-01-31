@@ -586,6 +586,9 @@ AC_CONFIG_FILES([config/libelf.pc config/libdw.pc config/libdebuginfod.pc])
 AC_SUBST(USE_NLS, yes)
 AM_PO_SUBDIRS
 
+case "$USE_NLS" in yes) intl_LDFLAGS="-lintl" ;; esac
+AC_SUBST([intl_LDFLAGS])
+
 dnl Appended to the config.h file.
 dnl We hide all kinds of configuration magic in lib/eu-config.h.
 AH_BOTTOM([#include <eu-config.h>])
