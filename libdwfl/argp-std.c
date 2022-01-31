@@ -53,9 +53,6 @@ static const struct argp_option options[] =
   { "linux-process-map", 'M', "FILE", 0,
     N_("Find addresses in files mapped as read from FILE"
        " in Linux /proc/PID/maps format"), 0 },
-  { "kernel", 'k', NULL, 0, N_("Find addresses in the running kernel"), 0 },
-  { "offline-kernel", 'K', "RELEASE", OPTION_ARG_OPTIONAL,
-    N_("Kernel with all modules"), 0 },
   { "debuginfo-path", OPT_DEBUGINFO, "PATH", 0,
     N_("Search path for separate debuginfo files"), 0 },
   { NULL, 0, NULL, 0, NULL, 0 }
@@ -80,15 +77,6 @@ static const Dwfl_Callbacks proc_callbacks =
     .debuginfo_path = &debuginfo_path,
 
     .find_elf = INTUSE(dwfl_linux_proc_find_elf),
-  };
-
-static const Dwfl_Callbacks kernel_callbacks =
-  {
-    .find_debuginfo = INTUSE(dwfl_standard_find_debuginfo),
-    .debuginfo_path = &debuginfo_path,
-
-    .find_elf = INTUSE(dwfl_linux_kernel_find_elf),
-    .section_address = INTUSE(dwfl_linux_kernel_module_section_address),
   };
 
 /* Structure held at state->HOOK.  */
@@ -220,43 +208,6 @@ parse_opt (int key, char *arg, struct argp_state *state)
 	else if (dwfl->callbacks != &offline_callbacks)
 	  goto toomany;
 	opt->core = arg;
-      }
-      break;
-
-    case 'k':
-      {
-	struct parse_opt *opt = state->hook;
-	if (opt->dwfl == NULL)
-	  {
-	    Dwfl *dwfl = INTUSE(dwfl_begin) (&kernel_callbacks);
-	    int result = INTUSE(dwfl_linux_kernel_report_kernel) (dwfl);
-	    if (result != 0)
-	      return fail (dwfl, result, _("cannot load kernel symbols"), state);
-	    result = INTUSE(dwfl_linux_kernel_report_modules) (dwfl);
-	    if (result != 0)
-	      /* Non-fatal to have no modules since we do have the kernel.  */
-	      argp_failure (state, 0, result, _("cannot find kernel modules"));
-	    opt->dwfl = dwfl;
-	  }
-	else
-	  goto toomany;
-      }
-      break;
-
-    case 'K':
-      {
-	struct parse_opt *opt = state->hook;
-	if (opt->dwfl == NULL)
-	  {
-	    Dwfl *dwfl = INTUSE(dwfl_begin) (&offline_callbacks);
-	    int result = INTUSE(dwfl_linux_kernel_report_offline) (dwfl, arg,
-								   NULL);
-	    if (result != 0)
-	      return fail (dwfl, result, _("cannot find kernel or modules"), state);
-	    opt->dwfl = dwfl;
-	  }
-	else
-	  goto toomany;
       }
       break;
 
