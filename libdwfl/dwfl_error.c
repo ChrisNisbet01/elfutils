@@ -154,7 +154,11 @@ dwfl_errmsg (int error)
   switch (error &~ 0xffff)
     {
     case OTHER_ERROR (ERRNO):
+#if defined(__GLIBC__) && !defined(__UCLIBC__)
       return strerror_r (error & 0xffff, "bad", 0);
+#else
+      return strerror (error & 0xffff);
+#endif
     case OTHER_ERROR (LIBELF):
       return elf_errmsg (error & 0xffff);
     case OTHER_ERROR (LIBDW):

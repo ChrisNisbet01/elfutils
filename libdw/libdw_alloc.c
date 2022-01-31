@@ -152,5 +152,5 @@ __attribute ((noreturn)) attribute_hidden
 __libdw_oom (void)
 {
   while (1)
-    error (EXIT_FAILURE, ENOMEM, "libdw");
+    error (EXIT_FAILURE, errno, gettext ("cannot allocate memory"));
 }

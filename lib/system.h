@@ -30,7 +30,18 @@
 #define LIB_SYSTEM_H	1
 
 #include <errno.h>
-#include <error.h>
+#ifdef HAVE_ERROR_H
+#include "error.h"
+#else
+#include "err.h"
+#include <stdio.h>
+#define error(status, errno, ...) 		\
+	do {					\
+		fflush(stdout); 		\
+		warn(__VA_ARGS__);		\
+		if (status) exit(status);	\
+	 } while(0)
+#endif
 #include <stddef.h>
 #include <stdint.h>
 #include <sys/param.h>
