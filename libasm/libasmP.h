@@ -36,6 +36,10 @@
 
 #include "libdwelf.h"
 
+#ifdef _ /* fix libintl-stub */
+#undef _
+#endif
+
 
 /* Known error codes.  */
 enum

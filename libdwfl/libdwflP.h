@@ -47,6 +47,10 @@
 
 typedef struct Dwfl_Process Dwfl_Process;
 
+#ifdef _ /* fix libintl-stub */
+#undef _
+#endif
+
 #define DWFL_ERRORS							      \
   DWFL_ERROR (NOERROR, N_("no error"))					      \
   DWFL_ERROR (UNKNOWN_ERROR, N_("unknown error"))			      \

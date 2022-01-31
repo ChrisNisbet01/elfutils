@@ -610,6 +610,9 @@ dnl AM_GNU_GETTEXT_REQUIRE_VERSION support.
 AM_GNU_GETTEXT_VERSION([0.19.6])
 AM_GNU_GETTEXT_REQUIRE_VERSION([0.19.6])
 
+case "$USE_NLS" in yes) intl_LDFLAGS="-lintl" ;; esac
+AC_SUBST([intl_LDFLAGS])
+
 dnl Appended to the config.h file.
 dnl We hide all kinds of configuration magic in lib/eu-config.h.
 AH_BOTTOM([#include <eu-config.h>])

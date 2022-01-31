@@ -37,6 +37,9 @@
 #include <dwarf.h>
 #include "atomics.h"
 
+#ifdef _ /* fix libintl-stub */
+#undef _
+#endif
 
 /* Known location expressions already decoded.  */
 struct loc_s
